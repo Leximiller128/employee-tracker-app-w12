@@ -4,7 +4,6 @@ const express = require("express");
 
 // create the connection
 const connection = mysql.createConnection(
-  //creates connection
   {
     host: "localhost",
     user: "root",
@@ -14,6 +13,7 @@ const connection = mysql.createConnection(
   console.log(`Connected to the employeelist_db database.`)
 );
 
+// send 404 if req not met
 app.use((req, res) => {
   res.status(404).end();
 });
