@@ -34,10 +34,10 @@ INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES 
 ('John', 'Doe', 5, 0), 
 ('Susan', 'Watts', 11, 0), 
-('Terri', 'Moore', 15, 0), 
+('Terri', 'Moore', 14, 0), 
 ('Kelly', 'Belly', 2, 0), 
-('Joe', 'Shmo', 1, 0), 
+('Joe', 'Shmo', 6, 0), 
 ('Sam', 'Brown', 3, 0), 
-('Sally', 'Truett', 6, 0), 
+('Sally', 'Truett', 1, 0), 
 ('Keri', 'Leverly', 8, 0), 
 ('Anna', 'Bowman', 7, 0);

@@ -14,12 +14,12 @@ const connection = mysql.createConnection(
   console.log(`Connected to the employeelist_db database.`)
 );
 
-// mysql.query((err, result) => {
-//     if (err) {
-//       console.log(err);
-//     }
-//     console.log(result);
-//   });
+mysql.query((err, result) => {
+  if (err) {
+    console.log(err);
+  }
+  console.log(result);
+});
 
 //ask the user to view all departments, roles or employees
 
@@ -53,6 +53,9 @@ const startApp = () => {
         case "view all roles":
           viewAllRoles();
           break;
+        case "view employees by department":
+          viewEmployeeByDept();
+          break;
         case "add department":
           addDepartment();
           break;
@@ -62,11 +65,28 @@ const startApp = () => {
         case "add employee":
           addEmployee();
           break;
+        case "remove employee":
+          removeEmployee();
+          break;
         case "exit the app":
           exitApp();
       }
     });
 };
+
+function viewEmployees() {
+  let queryInput = `SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee.manager_id AS department,`;
+
+  connection.query(queryInput, function (err, res) {
+    if (err) throw err;
+
+    startApp();
+  });
+}
+
+function viewDepartments() {
+  connection.query();
+}
 
 const exitApp = () => {
   process.exit();
