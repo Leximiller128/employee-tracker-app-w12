@@ -32,12 +32,12 @@ VALUES
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES 
-('John', 'Doe', 5, 0), 
-('Susan', 'Watts', 11, 0), 
-('Terri', 'Moore', 14, 0), 
-('Kelly', 'Belly', 2, 0), 
-('Joe', 'Shmo', 6, 0), 
-('Sam', 'Brown', 3, 0), 
-('Sally', 'Truett', 1, 0), 
-('Keri', 'Leverly', 8, 0), 
-('Anna', 'Bowman', 7, 0);
+('John', 'Doe', 5, NULL), 
+('Susan', 'Watts', 11, NULL), 
+('Terri', 'Moore', 14, NULL), 
+('Kelly', 'Belly', 2, NULL), 
+('Joe', 'Shmo', 6, NULL), 
+('Sam', 'Brown', 3, 1), 
+('Sally', 'Truett', 1, 3), 
+('Keri', 'Leverly', 8, 3), 
+('Anna', 'Bowman', 7, 1);

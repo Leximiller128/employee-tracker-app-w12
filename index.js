@@ -1,28 +1,8 @@
-const mysql = require("mysql2");
 const inquirer = require("inquirer");
-const { listenerCount, allowedNodeEnvironmentFlags } = require("process");
+const queries = require("./queries");
 require("console.table");
 
-// create the connection
-const connection = mysql.createConnection(
-  {
-    host: "localhost",
-    user: "root",
-    password: "root1234",
-    database: "employee_db",
-  },
-  console.log(`Connected to the employeelist_db database.`)
-);
-
-mysql.query((err, result) => {
-  if (err) {
-    console.log(err);
-  }
-  console.log(result);
-});
-
 //ask the user to view all departments, roles or employees
-
 const startApp = () => {
   return inquirer
     .prompt([
@@ -34,6 +14,7 @@ const startApp = () => {
           "view all departments",
           "view all roles",
           "view all employees",
+          "view employees by department",
           "add department",
           "add role",
           "add employee",
@@ -75,17 +56,51 @@ const startApp = () => {
 };
 
 function viewEmployees() {
-  let queryInput = `SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee.manager_id AS department,`;
-
-  connection.query(queryInput, function (err, res) {
-    if (err) throw err;
-
+  queries.viewEmployees().then(([employees]) => {
+    console.table(employees);
     startApp();
   });
 }
 
 function viewDepartments() {
-  connection.query();
+  queries.viewDepartments().then(([departments]) => {
+    console.table(departments);
+    startApp();
+  });
+}
+
+function viewAllRoles() {
+  queries.viewAllRoles().then(([roles]) => {
+    console.table(roles);
+    startApp();
+  });
+}
+
+function viewEmployeeByDept() {
+  queries.viewDepartments().then(([departments]) => {
+    // console.table(departments);
+    const departmentChoices = departments.map((department) => {
+      return { name: department.department_name, value: department.id };
+    });
+
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "department_id",
+          message: "Which department would you like to view employees for?",
+          choices: departmentChoices,
+        },
+      ])
+      .then((answer) => {
+        queries
+          .viewEmployeesByDept(answer.department_id)
+          .then(([employees]) => {
+            console.table(employees);
+            startApp();
+          });
+      });
+  });
 }
 
 const exitApp = () => {
