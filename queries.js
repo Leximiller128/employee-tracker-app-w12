@@ -25,6 +25,15 @@ class Queries {
         departmentId
       );
   }
+  addDepartment(department) {
+    return this.connection
+      .promise()
+      .query("INSERT INTO department SET ?", department);
+  }
+
+  addRole(roles) {
+    return this.connection.promise().query("INSERT INTO roles SET ?", roles);
+  }
 }
 
 module.exports = new Queries(connection);

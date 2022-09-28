@@ -41,7 +41,7 @@ const startApp = () => {
           addDepartment();
           break;
         case "add role":
-          addrole();
+          addRole();
           break;
         case "add employee":
           addEmployee();
@@ -78,7 +78,6 @@ function viewAllRoles() {
 
 function viewEmployeeByDept() {
   queries.viewDepartments().then(([departments]) => {
-    // console.table(departments);
     const departmentChoices = departments.map((department) => {
       return { name: department.department_name, value: department.id };
     });
@@ -99,6 +98,56 @@ function viewEmployeeByDept() {
             console.table(employees);
             startApp();
           });
+      });
+  });
+}
+
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        name: "department_name",
+        message: "Add department?",
+      },
+    ])
+    .then((res) => {
+      let department_name = res;
+      queries
+        .addDepartment(department_name)
+        .then(() => console.log(`Added ${department_name.name} to the table`));
+      startApp();
+    });
+}
+
+function addRole() {
+  queries.viewDepartments().then(([dept]) => {
+    let departments = dept;
+    const departmentChoices = departments.map(({ id, department_name }) => ({
+      name: department_name,
+      value: id,
+    }));
+    inquirer
+      .prompt([
+        {
+          name: "title",
+          message: "What is the name of the role?",
+        },
+        {
+          name: "salary",
+          message: "what is the salary of the role?",
+        },
+        {
+          type: "list",
+          name: "department_id",
+          message: "Which department does the role belong to?",
+          choices: departmentChoices,
+        },
+      ])
+      .then((roles) => {
+        queries
+          .addRole(roles)
+          .then(() => console.log("Added new role to the table"));
+        startApp();
       });
   });
 }
