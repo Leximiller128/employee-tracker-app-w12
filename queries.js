@@ -38,13 +38,18 @@ class Queries {
     return this.connection
       .promise()
       .query(
-        "SELECT employee.id, employee.first_name, employee.last_name, roles.title, department.name AS department, roles.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN roles on employee.role_id = role.id LEFT JOIN department on roles.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;"
+        "SELECT employees.id, employees.first_name, employees.last_name, roles.title, department.department_name AS department, roles.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employees LEFT JOIN roles on employees.role_id = roles.id LEFT JOIN department on roles.department_id = department.id LEFT JOIN employees manager on manager.id = employees.manager_id;"
       );
   }
   addEmployee(employee) {
     return this.connection
       .promise()
-      .query("INSERT INTO employee SET ?", employee);
+      .query("INSERT INTO employees SET ?", employee);
+  }
+  removeEmployee(id) {
+    return this.connection
+      .promise()
+      .query("DELETE FROM employees WHERE id=?", id);
   }
 }
 

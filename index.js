@@ -18,6 +18,7 @@ const startApp = () => {
           "add department",
           "add role",
           "add employee",
+          "remove employee",
           "exit the app",
         ],
       },
@@ -211,12 +212,31 @@ function addEmployee() {
 }
 
 function removeEmployee() {
-  db.findAllEmployees().then(([rows]) => {
+  queries.findAllEmployees().then(([rows]) => {
     let employees = rows;
     const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
       name: `${first_name} ${last_name}`,
       value: id,
     }));
+
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "removeEmployee",
+          message: "Which employee do you want to delete?",
+          choices: employeeChoices,
+        },
+      ])
+      .then((res) => {
+        queries.removeEmployee(res.removeEmployee);
+      })
+      .then(() => {
+        console.log("employee successfully removed!");
+        //console log success message
+        //call original prompt
+        startApp();
+      });
   });
 }
 
