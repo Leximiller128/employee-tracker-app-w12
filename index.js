@@ -253,6 +253,6 @@ function removeEmployee() {
 }
 
 const exitApp = () => {
-  process.exit();
+  process.exit(console.log("Bye!"));
 };
 startApp();
