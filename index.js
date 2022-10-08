@@ -169,19 +169,21 @@ function addEmployee() {
       let firstname = res.first_name;
       let lastname = res.last_name;
 
-      queries.findAllRoles().then(([rows]) => {
+      queries.viewAllRoles().then(([rows]) => {
         let roles = rows;
         const roleChoices = roles.map(({ id, title }) => ({
           name: title,
           value: id,
         }));
-        console.log(findAllEmployees);
-        prompt({
-          type: "list",
-          name: "role_id",
-          message: "What is the employee's role?",
-          choices: roleChoices,
-        });
+
+        prompt([
+          {
+            type: "list",
+            name: "role_id",
+            message: "What is the employee's role?",
+            choices: roleChoices,
+          },
+        ]);
         queries.findAllEmployees().then(([rows]) => {
           let employees = rows;
           const managerChoices = employees.map(
@@ -192,12 +194,14 @@ function addEmployee() {
           );
           managerChoices.unshift({ name: "None", value: null });
 
-          prompt({
-            type: "list",
-            name: "manager_id",
-            message: "Whos is the employee's manager?",
-            choices: managerChoices,
-          }).then((res) => {
+          prompt([
+            {
+              type: "list",
+              name: "manager_id",
+              message: "Whos is the employee's manager?",
+              choices: managerChoices,
+            },
+          ]).then((res) => {
             let employee = {
               manager_id: res.managerid,
               role_id: roleid,
