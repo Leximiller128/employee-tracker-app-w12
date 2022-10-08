@@ -209,6 +209,7 @@ function addEmployee() {
               last_name: lastname,
             };
             queries.addEmployee(employee);
+            startApp();
           });
         });
       });
