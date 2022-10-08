@@ -175,46 +175,50 @@ function addEmployee() {
           name: title,
           value: id,
         }));
-        prompt({
-          type: "list",
-          name: "role_id",
-          message: "What is the employee's role?",
-          choices: roleChoices,
-        });
+        inquirer
+          .prompt({
+            type: "list",
+            name: "role_id",
+            message: "What is the employee's role?",
+            choices: roleChoices,
+          })
+          .then((res) => {
+            let role_id = res.role_id;
 
-        console.log(roleChoices);
-        queries.findAllEmployees().then(([rows]) => {
-          let employees = rows;
-          const managerChoices = employees.map(
-            ({ id, first_name, last_name }) => ({
-              name: `${first_name} ${last_name}`,
-              value: id,
-            })
-          );
-          managerChoices.unshift({ name: "None", value: null });
-
-          prompt([
-            {
-              type: "list",
-              name: "manager_id",
-              message: "Whos is the employee's manager?",
-              choices: managerChoices,
-            },
-          ])
-            .then((res) => {
-              let employee = {
-                manager_id: res.managerid,
-                role_id: roleid,
-                first_name: firstname,
-                last_name: lastname,
-              };
-              queries.addEmployee(employee);
-            })
-            .then(() =>
-              console.log(`Added ${firstname} ${lastname} to the database`)
-            );
-          startApp();
-        });
+            console.log(roleChoices);
+            queries.findAllEmployees().then(([rows]) => {
+              let employees = rows;
+              const managerChoices = employees.map(
+                ({ id, first_name, last_name }) => ({
+                  name: `${first_name} ${last_name}`,
+                  value: id,
+                })
+              );
+              managerChoices.unshift({ name: "None", value: null });
+              inquirer
+                .prompt([
+                  {
+                    type: "list",
+                    name: "manager_id",
+                    message: "Whos is the employee's manager?",
+                    choices: managerChoices,
+                  },
+                ])
+                .then((res) => {
+                  let employee = {
+                    manager_id: res.managerid,
+                    role_id: role_id,
+                    first_name: firstname,
+                    last_name: lastname,
+                  };
+                  queries.addEmployee(employee);
+                })
+                .then(() =>
+                  console.log(`Added ${firstname} ${lastname} to the database`)
+                )
+                .then(() => startApp());
+            });
+          });
       });
     });
 }
