@@ -175,15 +175,14 @@ function addEmployee() {
           name: title,
           value: id,
         }));
+        prompt({
+          type: "list",
+          name: "role_id",
+          message: "What is the employee's role?",
+          choices: roleChoices,
+        });
 
-        prompt([
-          {
-            type: "list",
-            name: "role_id",
-            message: "What is the employee's role?",
-            choices: roleChoices,
-          },
-        ]);
+        console.log(roleChoices);
         queries.findAllEmployees().then(([rows]) => {
           let employees = rows;
           const managerChoices = employees.map(
@@ -201,16 +200,20 @@ function addEmployee() {
               message: "Whos is the employee's manager?",
               choices: managerChoices,
             },
-          ]).then((res) => {
-            let employee = {
-              manager_id: res.managerid,
-              role_id: roleid,
-              first_name: firstname,
-              last_name: lastname,
-            };
-            queries.addEmployee(employee);
-            startApp();
-          });
+          ])
+            .then((res) => {
+              let employee = {
+                manager_id: res.managerid,
+                role_id: roleid,
+                first_name: firstname,
+                last_name: lastname,
+              };
+              queries.addEmployee(employee);
+            })
+            .then(() =>
+              console.log(`Added ${firstname} ${lastname} to the database`)
+            );
+          startApp();
         });
       });
     });
